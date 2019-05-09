@@ -40,18 +40,32 @@ namespace StiffFormsLibrary
 
         void AddPlaceHolder()
         {
-            this.Text = TextPlaceHolder;
+            base.Text = TextPlaceHolder;
             this.ForeColor = SystemColors.GrayText;
             isPlaceHolding = true;
         }
 
         void RemovePlaceHolder()
         {
-            this.Text = "";
+            base.Text = "";
             this.ForeColor = SystemColors.WindowText;
             isPlaceHolding = false;
         }
 
+        public override string Text { get => base.Text; set
+            {
+                if (String.IsNullOrEmpty(value))
+                {
+                    AddPlaceHolder();
+                }
+                else
+                {
+                    if (isPlaceHolding)
+                        RemovePlaceHolder();
+                    base.Text = value;
+                }
+            }
+        }
 
         private void PlaceHolderTextbox_GotFocus(object sender, EventArgs e)
         {
