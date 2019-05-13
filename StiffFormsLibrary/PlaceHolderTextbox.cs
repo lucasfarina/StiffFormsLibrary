@@ -19,6 +19,15 @@ namespace StiffFormsLibrary
             this.LostFocus += PlaceHolderTextbox_LostFocus;
         }
 
+        private bool removingPlaceHolder = false;
+        protected override void OnTextChanged(EventArgs e)
+        {
+            if (!isPlaceHolding && !removingPlaceHolder)
+                base.OnTextChanged(e);
+            else
+                return;
+        }
+
         private string placeHolder;
         private bool isPlaceHolding;
         public string TextPlaceHolder
@@ -40,16 +49,18 @@ namespace StiffFormsLibrary
 
         void AddPlaceHolder()
         {
+            isPlaceHolding = true;
             base.Text = TextPlaceHolder;
             this.ForeColor = SystemColors.GrayText;
-            isPlaceHolding = true;
         }
 
         void RemovePlaceHolder()
         {
+            removingPlaceHolder = true;
+            isPlaceHolding = false;
             base.Text = "";
             this.ForeColor = SystemColors.WindowText;
-            isPlaceHolding = false;
+            removingPlaceHolder = false;
         }
 
         public override string Text {
@@ -84,7 +95,7 @@ namespace StiffFormsLibrary
 
         private void PlaceHolderTextbox_LostFocus(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(this.Text) && !isPlaceHolding)
+            if (String.IsNullOrEmpty(base.Text) && !isPlaceHolding)
             {
                 AddPlaceHolder();
             }
