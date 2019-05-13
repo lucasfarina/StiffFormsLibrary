@@ -52,7 +52,14 @@ namespace StiffFormsLibrary
             isPlaceHolding = false;
         }
 
-        public override string Text { get => base.Text; set
+        public override string Text {
+            get
+            {
+                if (isPlaceHolding)
+                    return String.Empty;
+                return base.Text;
+            }
+            set
             {
                 if (String.IsNullOrEmpty(value))
                 {
